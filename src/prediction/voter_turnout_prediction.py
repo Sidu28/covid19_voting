@@ -21,6 +21,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 from population_age_transformer import PopulationAgeTransformer
+from poverty_by_race_transformer import PovertybyRaceTransformer
 from prediction.covid_utils import CovidUtils
 from utils.logging_service import LoggingService
 from visualization import Visualizer
@@ -154,7 +155,21 @@ class StatePredictor(object):
                             2012: os.path.join(os.path.dirname(__file__),
                                                '../../voteByMail2012.xlsx'),
                            }
-    
+    POVERTY_BY_RACE_BY_STATE =         {
+                           2008: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2008.csv'),
+                           2010: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2010.csv'),
+                           2012: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2012.csv'),
+                           2014: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2014.csv'),
+                           2016: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2016.csv'),
+                           2018: os.path.join(os.path.dirname(__file__),
+                                            '../../data/povertyrace2018.csv')
+                           }
+    '''
     FAMILY_STRUCTURE_BY_STATE =         {
                            2008: os.path.join(os.path.dirname(__file__),
                                             '../../data/structure2008.csv'),
@@ -168,6 +183,21 @@ class StatePredictor(object):
                                             '../../data/structure2016.csv'),
                            2018: os.path.join(os.path.dirname(__file__),
                                             '../../data/structure2018.csv')
+                           }
+    '''
+    FPL_BY_STATE =         {
+                           2008: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2008.csv'),
+                           2010: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2010.csv'),
+                           2012: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2012.csv'),
+                           2014: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2014.csv'),
+                           2016: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2016.csv'),
+                           2018: os.path.join(os.path.dirname(__file__),
+                                            '../../data/fpl2018.csv')
                            }
 
     RANDOM_SEED = 42
@@ -236,10 +266,19 @@ class StatePredictor(object):
         election_features = PopulationAgeTransformer(self.AGE_BY_STATE).fit_transform(election_features)
         self.log.info("Done adding age distribution by State.")
         
-        self.log.info("Population Distribution by Family Structure by State...")
-        election_features = familyStructureTransformer(self.FAMILY_STRUCTURE_BY_STATE).fit_transform(election_features)
-        self.log.info("Done Adding Population Distribution by Family Structure by State")
+        self.log.info("Adding Poverty  by race distribution...")
+        election_features = PovertybyRaceTransformer(self.POVERTY_BY_RACE_BY_STATE.fit_transform(election_features)
+        self.log.info("Done Poverty  by race distribution")
+        
+        self.log.info("Adding FPL distribution by state...")
+        election_features = PovertyLevelTransformer(self.FPL_BY_STATE.fit_transform(election_features)
+        self.log.info("Done Adding FPL distribution by state...")
 
+'''
+        self.log.info("Population Distribution by Family Structure by State...")
+        election_features = FamilyStructureTransformer(self.FAMILY_STRUCTURE_BY_STATE).fit_transform(election_features)
+        self.log.info("Done Adding Population Distribution by Family Structure by State")
+'''
         # Remove columns not needed, and encode 
         # categorical columns:
         
