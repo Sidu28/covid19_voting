@@ -149,8 +149,25 @@ class StatePredictor(object):
                                                '../../voteByMail2016.xls'),
                             2014: os.path.join(os.path.dirname(__file__),
                                                '../../voteByMail2014.xls'),
+            
+                            
                             2012: os.path.join(os.path.dirname(__file__),
                                                '../../voteByMail2012.xlsx'),
+                           }
+    
+    FAMILY_STRUCTURE_BY_STATE =         {
+                           2008: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2008.csv'),
+                           2010: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2010.csv'),
+                           2012: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2012.csv'),
+                           2014: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2014.csv'),
+                           2016: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2016.csv'),
+                           2018: os.path.join(os.path.dirname(__file__),
+                                            '../../data/structure2018.csv')
                            }
 
     RANDOM_SEED = 42
@@ -218,6 +235,10 @@ class StatePredictor(object):
         self.log.info("Adding age distribution by State...")
         election_features = PopulationAgeTransformer(self.AGE_BY_STATE).fit_transform(election_features)
         self.log.info("Done adding age distribution by State.")
+        
+        self.log.info("Population Distribution by Family Structure by State...")
+        election_features = familyStructureTransformer(self.FAMILY_STRUCTURE_BY_STATE).fit_transform(election_features)
+        self.log.info("Done Adding Population Distribution by Family Structure by State")
 
         # Remove columns not needed, and encode 
         # categorical columns:
