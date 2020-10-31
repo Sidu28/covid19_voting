@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 30 11:37:23 2020
-
-@author: sidu
+@author: Siddhartha Jagannath
 """
 
 from sklearn.base import BaseEstimator, TransformerMixin
